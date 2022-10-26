@@ -9,12 +9,13 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.zybooks.diceroller.databinding.ActivityMainBinding
 
 const val MAX_DICE = 3
 
 class MainActivity : AppCompatActivity(),
-
     RollLengthDialogFragment.OnRollLengthSelectedListener {
+    private lateinit var binding: ActivityMainBinding
     private var timerLength = 2000L
     private var timer: CountDownTimer? = null
     private lateinit var optionsMenu: Menu
