@@ -29,4 +29,13 @@
         android:title="@string/action_three"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/action_four"
+        android:title="@string/action_four"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_five"
+        android:title="@string/action_five"
+        app:showAsAction="never"/>
+
+
 </menu>

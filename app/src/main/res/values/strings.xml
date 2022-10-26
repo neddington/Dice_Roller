@@ -4,6 +4,8 @@
     <string name="action_one">One</string>
     <string name="action_two">Two</string>
     <string name="action_three">Three</string>
+    <string name="action_four">Four</string>
+    <string name="action_five">Five</string>
     <string name="action_stop">Stop</string>
     <string name="dice_one">1</string>
     <string name="add_one">Add one</string>
@@ -13,6 +15,7 @@
 
     <!-- Dialog title -->
     <string name="pick_roll_length">Roll length?</string>
+
     <!-- Dialog list options -->
     <string-array name="length_array">
         <item>Short</item>

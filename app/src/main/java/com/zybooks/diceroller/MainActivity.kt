@@ -118,6 +118,16 @@ class MainActivity : AppCompatActivity(),
                 showDice()
                 true
             }
+            R.id.action_four -> {
+                changeDiceVisibility(4)
+                showDice()
+                true
+            }
+            R.id.action_five -> {
+                changeDiceVisibility(5)
+                showDice()
+                true
+            }
             R.id.action_stop -> {
                 timer?.cancel()
                 item.isVisible = false
