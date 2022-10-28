@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.zybooks.diceroller.databinding.ActivityMainBinding
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var diceList: MutableList<Dice>
     private lateinit var diceImageViewList: MutableList<ImageView>
     private var selectedDie = 0
-
+    private var total = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +59,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu?,
-                                     v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         // Save which die is selected
         selectedDie = v?.tag as Int
@@ -162,16 +162,27 @@ class MainActivity : AppCompatActivity(),
         // Start a timer that periodically changes each visible dice
         timer = object : CountDownTimer(timerLength, 100) {
             override fun onTick(millisUntilFinished: Long) {
+
                 for (i in 0 until numVisibleDice) {
                     diceList[i].roll()
+
+
                 }
                 showDice()
             }
 
             override fun onFinish() {
+
                 optionsMenu.findItem(R.id.action_stop).isVisible = false
+                for (i in 0 until numVisibleDice) {
+                   total += diceList[i].number
+                }
+                Toast.makeText(applicationContext,"Total Dice: " + total, Toast.LENGTH_LONG).show()
+                total = 0
             }
         }.start()
+
+
     }
 
     private fun changeDiceVisibility(numVisible: Int) {
