@@ -11,10 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.zybooks.diceroller.databinding.ActivityMainBinding
 
+
 const val MAX_DICE = 5
+
 
 class MainActivity : AppCompatActivity(),
     RollLengthDialogFragment.OnRollLengthSelectedListener {
+
     private lateinit var binding: ActivityMainBinding
     private var timerLength = 2000L
     private var timer: CountDownTimer? = null
@@ -24,10 +27,16 @@ class MainActivity : AppCompatActivity(),
     private lateinit var diceImageViewList: MutableList<ImageView>
     private var selectedDie = 0
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+      //  val dialog = WarningDialogFragment()
+        //
+        // dialog.show(supportFragmentManager, "warningDialog")
 
         // Create list of Dice
         diceList = mutableListOf()
@@ -137,6 +146,11 @@ class MainActivity : AppCompatActivity(),
                 rollDice()
                 true
             }
+            R.id.action_roll_length -> {
+                val dialog = RollLengthDialogFragment()
+                dialog.show(supportFragmentManager, "rollLengthDialog")
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -173,4 +187,5 @@ class MainActivity : AppCompatActivity(),
             diceImageViewList[i].visibility = View.GONE
         }
     }
+
 }

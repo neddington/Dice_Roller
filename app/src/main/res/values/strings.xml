@@ -11,6 +11,14 @@
     <string name="add_one">Add one</string>
     <string name="subtract_one">Subtract one</string>
     <string name="roll">Roll</string>
+    <string name="warning">Warning</string>
+    <string name="warning_message">You are almost out of storage.</string>
+    <string name="ok">Ok</string>
+    <string name="disk_full">Disk is full</string>
+    <string name="make_room">Make room for more photos?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="later">Later</string>
 
 
     <!-- Dialog title -->
@@ -22,4 +30,6 @@
         <item>Medium</item>
         <item>Long</item>
     </string-array>
+
+
 </resources>
