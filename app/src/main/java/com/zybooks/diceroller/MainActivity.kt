@@ -1,11 +1,9 @@
 package com.zybooks.diceroller
 
+
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.ContextMenu
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +26,8 @@ class MainActivity : AppCompatActivity(),
     private lateinit var diceImageViewList: MutableList<ImageView>
     private var selectedDie = 0
     private var total = 0
+    private var initTouchX = 0
+    private var initTouchY = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +57,43 @@ class MainActivity : AppCompatActivity(),
             registerForContextMenu(diceImageViewList[i])
             diceImageViewList[i].tag = i
         }
+        // Moving finger left or right changes dice number
+        diceImageViewList[0].setOnTouchListener { _, event ->
+            var returnVal = true
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    initTouchX = event.x.toInt()
+                    initTouchY=  event.y.toInt()
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val x = event.x.toInt()
+                    val y = event.y.toInt()
+
+                    // See if movement is at least 20 pixels
+                    if (kotlin.math.abs(x - initTouchX) >= 20) {
+                        if (x > initTouchX) {
+                            diceList[0].number++
+                        } else {
+                            diceList[0].number--
+                        }
+                        showDice()
+                        initTouchX = x
+                    }
+                    else if (kotlin.math.abs(y - initTouchY) >= 20) {
+                        if (y > initTouchY) {
+                            diceList[0].number++
+                        } else {
+                            diceList[0].number--
+                        }
+                        showDice()
+                        initTouchY = y
+                    }
+                }
+                else -> returnVal = false
+            }
+            returnVal
+        }
+
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
