@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
 import com.zybooks.diceroller.databinding.ActivityMainBinding
 
 
@@ -26,8 +27,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var diceImageViewList: MutableList<ImageView>
     private var selectedDie = 0
     private var total = 0
-    private var initTouchX = 0
-    private var initTouchY = 0
+    private lateinit var gestureDetector: GestureDetectorCompat
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,48 +54,45 @@ class MainActivity : AppCompatActivity(),
         showDice()
         // Register context menus for all dice and tag each die
         for (i in 0 until diceImageViewList.size) {
-            registerForContextMenu(diceImageViewList[i])
             diceImageViewList[i].tag = i
         }
-        // Moving finger left or right changes dice number
-        diceImageViewList[0].setOnTouchListener { _, event ->
-            var returnVal = true
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    initTouchX = event.x.toInt()
-                    initTouchY=  event.y.toInt()
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val x = event.x.toInt()
-                    val y = event.y.toInt()
 
-                    // See if movement is at least 20 pixels
-                    if (kotlin.math.abs(x - initTouchX) >= 20) {
-                        if (x > initTouchX) {
-                            diceList[0].number++
-                        } else {
-                            diceList[0].number--
-                        }
+
+        gestureDetector = GestureDetectorCompat(this,
+            object : GestureDetector.SimpleOnGestureListener() {
+                override fun onDown(e: MotionEvent?): Boolean {
+                    return true
+                }
+
+                override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float,
+                                     velocityY: Float): Boolean {
+                    rollDice()
+                    return true
+                }
+
+                override fun onDoubleTap(e: MotionEvent?): Boolean {
+                    for (i in 0 until numVisibleDice) {
+                        diceList[i].number++
                         showDice()
-                        initTouchX = x
                     }
-                    else if (kotlin.math.abs(y - initTouchY) >= 20) {
-                        if (y > initTouchY) {
-                            diceList[0].number++
-                        } else {
-                            diceList[0].number--
-                        }
+                    return true
+                }
+
+                override fun onLongPress(e: MotionEvent?) {
+                    for (i in 0 until numVisibleDice) {
+                        diceList[i].number--
                         showDice()
-                        initTouchY = y
                     }
                 }
-                else -> returnVal = false
             }
-            returnVal
-        }
-
+        )
     }
-
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event != null) {
+            gestureDetector.onTouchEvent(event)
+        }
+        return super.onTouchEvent(event)
+    }
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         // Save which die is selected
